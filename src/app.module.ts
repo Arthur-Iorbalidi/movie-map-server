@@ -13,6 +13,7 @@ import { MovieActor } from './movie_actor/movie_actor.model';
 import { DirectorUser } from './director_user/director_user';
 import { ActorUser } from './actor_user/actor_user';
 import { MovieUser } from './movie_user/movie_user';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [],
@@ -44,6 +45,7 @@ import { MovieUser } from './movie_user/movie_user';
     MovieModule,
     ActorModule,
     DirectorModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

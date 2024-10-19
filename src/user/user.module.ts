@@ -24,5 +24,6 @@ import { MovieUser } from 'src/movie_user/movie_user';
       MovieUser,
     ]),
   ],
+  exports: [UserService],
 })
 export class UserModule {}
