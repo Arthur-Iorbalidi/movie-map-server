@@ -1,8 +1,18 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './users/users.model';
+import { User } from './user/user.model';
+import { MovieModule } from './movie/movie.module';
+import { ActorModule } from './actor/actor.module';
+import { DirectorModule } from './director/director.module';
+import { Movie } from './movie/movie.model';
+import { Actor } from './actor/actor.model';
+import { Director } from './director/director.model';
+import { MovieActor } from './movie_actor/movie_actor.model';
+import { DirectorUser } from './director_user/director_user';
+import { ActorUser } from './actor_user/actor_user';
+import { MovieUser } from './movie_user/movie_user';
 
 @Module({
   controllers: [],
@@ -18,10 +28,22 @@ import { User } from './users/users.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRESS_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User],
+      models: [
+        User,
+        Movie,
+        Actor,
+        Director,
+        MovieActor,
+        DirectorUser,
+        ActorUser,
+        MovieUser,
+      ],
       autoLoadModels: true,
     }),
-    UsersModule,
+    UserModule,
+    MovieModule,
+    ActorModule,
+    DirectorModule,
   ],
 })
 export class AppModule {}
