@@ -12,6 +12,8 @@ import { ActorService } from 'src/actor/actor.service';
 import { DirectorService } from 'src/director/director.service';
 import { ActorUser } from 'src/actor_user/actor_user';
 import { DirectorUser } from 'src/director_user/director_user';
+import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -51,6 +53,28 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { email },
     });
+
+    return user;
+  }
+
+  async updateUser(id: number, dto: UpdateUserDto): Promise<User> {
+    const user = await this.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (dto.password) {
+      const hashPassword = await bcrypt.hash(dto.password, 10);
+      const updatedUser = {
+        ...dto,
+        password: hashPassword,
+      };
+
+      await user.update(updatedUser);
+    } else {
+      await user.update(dto);
+    }
 
     return user;
   }

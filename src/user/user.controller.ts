@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -6,6 +18,8 @@ import { User } from './user.model';
 import { ToggleFavoriteMovieDto } from './dto/toggle-favorite-movie.dto';
 import { ToggleFavoriteActorDto } from './dto/toggle-favorite-actor.dto';
 import { ToggleFavoriteDirectorDto } from './dto/toggle-favorite-director.dto';
+import { JwtAuthGuard } from 'src/Guards/jwt-auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -33,66 +47,105 @@ export class UserController {
     return this.userService.createUser(userDto);
   }
 
-  @Post(':id/favorites/movie')
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  updateUser(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req,
+  ) {
+    const userId = req.user.id;
+    const parsedId = parseInt(id, 10);
+
+    if (isNaN(parsedId)) {
+      throw new BadRequestException('Invalid user ID');
+    }
+
+    if (userId !== parsedId) {
+      throw new ForbiddenException('You can update only your own profile');
+    }
+
+    return this.userService.updateUser(userId, updateUserDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('favorites/movie')
   addFavoriteMovie(
-    @Param('id') userId: number,
+    @Req() req,
     @Body() toggleFavoriteMovieDto: ToggleFavoriteMovieDto,
   ) {
+    const userId: number = req.user.id;
+
     return this.userService.addMovieToFavorites(
       userId,
       toggleFavoriteMovieDto.movieId,
     );
   }
 
-  @Delete(':id/favorites/movie')
+  @UseGuards(JwtAuthGuard)
+  @Delete('favorites/movie')
   removeFavoriteMovie(
-    @Param('id') userId: number,
+    @Req() req,
     @Body() toggleFavoriteMovieDto: ToggleFavoriteMovieDto,
   ) {
+    const userId: number = req.user.id;
+
     return this.userService.removeMovieFromFavorites(
       userId,
       toggleFavoriteMovieDto.movieId,
     );
   }
 
-  @Post(':id/favorites/actor')
+  @UseGuards(JwtAuthGuard)
+  @Post('favorites/actor')
   addFavoriteActor(
-    @Param('id') userId: number,
+    @Req() req,
     @Body() toggleFavoriteActorDto: ToggleFavoriteActorDto,
   ) {
+    const userId: number = req.user.id;
+
     return this.userService.addActorToFavorites(
       userId,
       toggleFavoriteActorDto.actorId,
     );
   }
 
-  @Delete(':id/favorites/actor')
+  @UseGuards(JwtAuthGuard)
+  @Delete('favorites/actor')
   removeFavoriteActor(
-    @Param('id') userId: number,
+    @Req() req,
     @Body() toggleFavoriteActorDto: ToggleFavoriteActorDto,
   ) {
+    const userId: number = req.user.id;
+
     return this.userService.removeActorFromFavorites(
       userId,
       toggleFavoriteActorDto.actorId,
     );
   }
 
-  @Post(':id/favorites/director')
+  @UseGuards(JwtAuthGuard)
+  @Post('favorites/director')
   addFavoriteDirector(
-    @Param('id') userId: number,
+    @Req() req,
     @Body() toggleFavoriteDirectorDto: ToggleFavoriteDirectorDto,
   ) {
+    const userId: number = req.user.id;
+
     return this.userService.addDirectorToFavorites(
       userId,
       toggleFavoriteDirectorDto.directorId,
     );
   }
 
-  @Delete(':id/favorites/director')
+  @UseGuards(JwtAuthGuard)
+  @Delete('favorites/director')
   removeFavoriteDirector(
-    @Param('id') userId: number,
+    @Req() req,
     @Body() toggleFavoriteDirectorDto: ToggleFavoriteDirectorDto,
   ) {
+    const userId: number = req.user.id;
+
     return this.userService.removeDirectorFromFavorites(
       userId,
       toggleFavoriteDirectorDto.directorId,
