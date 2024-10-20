@@ -11,5 +11,6 @@ import { ActorUser } from 'src/actor_user/actor_user';
   controllers: [ActorController],
   providers: [ActorService],
   imports: [SequelizeModule.forFeature([Actor, Movie, MovieActor, ActorUser])],
+  exports: [ActorService],
 })
 export class ActorModule {}

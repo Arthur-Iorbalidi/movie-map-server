@@ -11,7 +11,7 @@ import { ActorUser } from 'src/actor_user/actor_user';
 import { Director } from 'src/director/director.model';
 import { DirectorUser } from 'src/director_user/director_user';
 import { Movie } from 'src/movie/movie.model';
-import { MovieUser } from 'src/movie_user/movie_user';
+import { MovieUser } from 'src/movie_user/movie_user.model';
 
 interface UserCreationAttrs {
   name: string;

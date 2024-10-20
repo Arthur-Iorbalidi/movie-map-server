@@ -11,5 +11,6 @@ import { Movie } from 'src/movie/movie.model';
   controllers: [DirectorController],
   providers: [DirectorService],
   imports: [SequelizeModule.forFeature([Director, Movie, User, DirectorUser])],
+  exports: [DirectorService],
 })
 export class DirectorModule {}

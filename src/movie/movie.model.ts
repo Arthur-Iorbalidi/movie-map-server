@@ -10,7 +10,7 @@ import {
 import { Actor } from 'src/actor/actor.model';
 import { Director } from 'src/director/director.model';
 import { MovieActor } from 'src/movie_actor/movie_actor.model';
-import { MovieUser } from 'src/movie_user/movie_user';
+import { MovieUser } from 'src/movie_user/movie_user.model';
 import { User } from 'src/user/user.model';
 
 interface MovieCreationAttrs {

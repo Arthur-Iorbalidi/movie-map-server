@@ -12,7 +12,7 @@ import { Director } from './director/director.model';
 import { MovieActor } from './movie_actor/movie_actor.model';
 import { DirectorUser } from './director_user/director_user';
 import { ActorUser } from './actor_user/actor_user';
-import { MovieUser } from './movie_user/movie_user';
+import { MovieUser } from './movie_user/movie_user.model';
 import { AuthModule } from './auth/auth.module';
 
 @Module({

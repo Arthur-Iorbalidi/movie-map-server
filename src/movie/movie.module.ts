@@ -22,5 +22,6 @@ import { Director } from 'src/director/director.model';
       MovieActor,
     ]),
   ],
+  exports: [MovieService],
 })
 export class MovieModule {}

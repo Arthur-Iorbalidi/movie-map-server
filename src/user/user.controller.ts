@@ -4,6 +4,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
 import { ToggleFavoriteMovieDto } from './dto/toggle-favorite-movie.dto';
+import { ToggleFavoriteActorDto } from './dto/toggle-favorite-actor.dto';
+import { ToggleFavoriteDirectorDto } from './dto/toggle-favorite-director.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -50,6 +52,50 @@ export class UserController {
     return this.userService.removeMovieFromFavorites(
       userId,
       toggleFavoriteMovieDto.movieId,
+    );
+  }
+
+  @Post(':id/favorites/actor')
+  addFavoriteActor(
+    @Param('id') userId: number,
+    @Body() toggleFavoriteActorDto: ToggleFavoriteActorDto,
+  ) {
+    return this.userService.addActorToFavorites(
+      userId,
+      toggleFavoriteActorDto.actorId,
+    );
+  }
+
+  @Delete(':id/favorites/actor')
+  removeFavoriteActor(
+    @Param('id') userId: number,
+    @Body() toggleFavoriteActorDto: ToggleFavoriteActorDto,
+  ) {
+    return this.userService.removeActorFromFavorites(
+      userId,
+      toggleFavoriteActorDto.actorId,
+    );
+  }
+
+  @Post(':id/favorites/director')
+  addFavoriteDirector(
+    @Param('id') userId: number,
+    @Body() toggleFavoriteDirectorDto: ToggleFavoriteDirectorDto,
+  ) {
+    return this.userService.addDirectorToFavorites(
+      userId,
+      toggleFavoriteDirectorDto.directorId,
+    );
+  }
+
+  @Delete(':id/favorites/director')
+  removeFavoriteDirector(
+    @Param('id') userId: number,
+    @Body() toggleFavoriteDirectorDto: ToggleFavoriteDirectorDto,
+  ) {
+    return this.userService.removeDirectorFromFavorites(
+      userId,
+      toggleFavoriteDirectorDto.directorId,
     );
   }
 }
