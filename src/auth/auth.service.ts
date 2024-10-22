@@ -57,6 +57,12 @@ export class AuthService {
     return this.generationToken(user);
   }
 
+  async check(id: number) {
+    const user = await this.userService.getUserById(id);
+
+    return user;
+  }
+
   private async generationToken(user: User) {
     const payload = { email: user.email, id: user.id };
 
