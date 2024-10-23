@@ -14,6 +14,9 @@ import { ActorUser } from 'src/actor_user/actor_user';
 import { DirectorUser } from 'src/director_user/director_user';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcryptjs';
+import { Movie } from 'src/movie/movie.model';
+import { Actor } from 'src/actor/actor.model';
+import { Director } from 'src/director/director.model';
 
 @Injectable()
 export class UserService {
@@ -178,15 +181,42 @@ export class UserService {
       throw new BadRequestException('userId or directorId not provided');
     }
 
-    const adirectorUserRecord = await this.directorUserRepository.findOne({
+    const directorUserRecord = await this.directorUserRepository.findOne({
       where: { userId, directorId },
     });
 
-    if (adirectorUserRecord) {
-      await adirectorUserRecord.destroy();
-      return adirectorUserRecord;
+    if (directorUserRecord) {
+      await directorUserRecord.destroy();
+      return directorUserRecord;
     } else {
       throw new NotFoundException("Director not found in user's favorites");
     }
+  }
+
+  async getFavoritesMovies(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      include: [Movie],
+    });
+
+    return user.movies;
+  }
+
+  async getFavoritesActors(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      include: [Actor],
+    });
+
+    return user.actors;
+  }
+
+  async getFavoritesDirectors(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      include: [Director],
+    });
+
+    return user.directors;
   }
 }

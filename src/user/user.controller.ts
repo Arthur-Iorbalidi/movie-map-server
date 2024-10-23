@@ -151,4 +151,26 @@ export class UserController {
       toggleFavoriteDirectorDto.directorId,
     );
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('favorites/movies')
+  getFavoritesMovies(@Req() req) {
+    const userId: number = req.user.id;
+
+    return this.userService.getFavoritesMovies(userId);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('favorites/actors')
+  getFavoritesActors(@Req() req) {
+    const userId: number = req.user.id;
+
+    return this.userService.getFavoritesActors(userId);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('favorites/directors')
+  getFavoritesDirectors(@Req() req) {
+    const userId: number = req.user.id;
+
+    return this.userService.getFavoritesDirectors(userId);
+  }
 }
