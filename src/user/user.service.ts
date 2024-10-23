@@ -35,7 +35,9 @@ export class UserService {
   }
 
   async getAllUsers() {
-    const users = await this.userRepository.findAll();
+    const users = await this.userRepository.findAll({
+      attributes: { exclude: ['password'] },
+    });
 
     return users;
   }
@@ -44,6 +46,7 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { id },
       include: { all: true },
+      attributes: { exclude: ['password'] },
     });
 
     return user;

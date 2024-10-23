@@ -17,7 +17,7 @@ export class ActorController {
   }
 
   @Post()
-  createMovie(@Body() directorDto: CreateActorDto) {
+  createActor(@Body() directorDto: CreateActorDto) {
     return this.actorService.createActor(directorDto);
   }
 }

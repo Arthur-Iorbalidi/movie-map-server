@@ -1,15 +1,14 @@
 import {
-  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
-  ForeignKey,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { Actor } from 'src/actor/actor.model';
 import { Director } from 'src/director/director.model';
 import { MovieActor } from 'src/movie_actor/movie_actor.model';
+import { MovieDirector } from 'src/movie_director/movie_director.model';
 import { MovieUser } from 'src/movie_user/movie_user.model';
 import { User } from 'src/user/user.model';
 
@@ -50,16 +49,12 @@ export class Movie extends Model<Movie, MovieCreationAttrs> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   budget: string;
 
+  @BelongsToMany(() => Director, () => MovieDirector)
+  directors: Director[];
+
   @BelongsToMany(() => Actor, () => MovieActor)
   actors: Actor[];
 
   @BelongsToMany(() => User, () => MovieUser)
   users: User[];
-
-  @ForeignKey(() => Director)
-  @Column({ type: DataType.INTEGER })
-  directorId: number;
-
-  @BelongsTo(() => Director)
-  director: Director;
 }

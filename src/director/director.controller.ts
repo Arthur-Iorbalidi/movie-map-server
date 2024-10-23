@@ -17,7 +17,7 @@ export class DirectorController {
   }
 
   @Post()
-  createMovie(@Body() directorDto: CreateDirectorDto) {
+  createDirector(@Body() directorDto: CreateDirectorDto) {
     return this.directorService.createDirector(directorDto);
   }
 }

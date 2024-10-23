@@ -2,12 +2,12 @@ import {
   BelongsToMany,
   Column,
   DataType,
-  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { DirectorUser } from 'src/director_user/director_user';
 import { Movie } from 'src/movie/movie.model';
+import { MovieDirector } from 'src/movie_director/movie_director.model';
 import { User } from 'src/user/user.model';
 
 interface DirectorCreationAttrs {
@@ -54,6 +54,6 @@ export class Director extends Model<Director, DirectorCreationAttrs> {
   @BelongsToMany(() => User, () => DirectorUser)
   users: User[];
 
-  @HasMany(() => Movie)
-  movies: Movie[];
+  @BelongsToMany(() => Movie, () => MovieDirector)
+  movies: Director[];
 }

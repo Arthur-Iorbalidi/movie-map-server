@@ -14,6 +14,7 @@ import { DirectorUser } from './director_user/director_user';
 import { ActorUser } from './actor_user/actor_user';
 import { MovieUser } from './movie_user/movie_user.model';
 import { AuthModule } from './auth/auth.module';
+import { MovieDirector } from './movie_director/movie_director.model';
 
 @Module({
   controllers: [],
@@ -35,6 +36,7 @@ import { AuthModule } from './auth/auth.module';
         Actor,
         Director,
         MovieActor,
+        MovieDirector,
         DirectorUser,
         ActorUser,
         MovieUser,

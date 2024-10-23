@@ -8,6 +8,7 @@ import { User } from 'src/user/user.model';
 import { ActorUser } from 'src/actor_user/actor_user';
 import { MovieActor } from 'src/movie_actor/movie_actor.model';
 import { Director } from 'src/director/director.model';
+import { MovieDirector } from 'src/movie_director/movie_director.model';
 
 @Module({
   controllers: [MovieController],
@@ -20,6 +21,7 @@ import { Director } from 'src/director/director.model';
       Director,
       ActorUser,
       MovieActor,
+      MovieDirector,
     ]),
   ],
   exports: [MovieService],
