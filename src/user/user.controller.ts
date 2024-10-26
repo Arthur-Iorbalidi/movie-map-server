@@ -15,9 +15,6 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
-import { ToggleFavoriteMovieDto } from './dto/toggle-favorite-movie.dto';
-import { ToggleFavoriteActorDto } from './dto/toggle-favorite-actor.dto';
-import { ToggleFavoriteDirectorDto } from './dto/toggle-favorite-director.dto';
 import { JwtAuthGuard } from 'src/Guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -69,87 +66,51 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('favorites/movie')
-  addFavoriteMovie(
-    @Req() req,
-    @Body() toggleFavoriteMovieDto: ToggleFavoriteMovieDto,
-  ) {
+  @Post('favorites/movie/:id')
+  addFavoriteMovie(@Req() req, @Param('id') id: number) {
     const userId: number = req.user.id;
 
-    return this.userService.addMovieToFavorites(
-      userId,
-      toggleFavoriteMovieDto.movieId,
-    );
+    return this.userService.addMovieToFavorites(userId, id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('favorites/movie')
-  removeFavoriteMovie(
-    @Req() req,
-    @Body() toggleFavoriteMovieDto: ToggleFavoriteMovieDto,
-  ) {
+  @Delete('favorites/movie/:id')
+  removeFavoriteMovie(@Req() req, @Param('id') id: number) {
     const userId: number = req.user.id;
 
-    return this.userService.removeMovieFromFavorites(
-      userId,
-      toggleFavoriteMovieDto.movieId,
-    );
+    return this.userService.removeMovieFromFavorites(userId, id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('favorites/actor')
-  addFavoriteActor(
-    @Req() req,
-    @Body() toggleFavoriteActorDto: ToggleFavoriteActorDto,
-  ) {
+  @Post('favorites/actor/:id')
+  addFavoriteActor(@Req() req, @Param('id') id: number) {
     const userId: number = req.user.id;
 
-    return this.userService.addActorToFavorites(
-      userId,
-      toggleFavoriteActorDto.actorId,
-    );
+    return this.userService.addActorToFavorites(userId, id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('favorites/actor')
-  removeFavoriteActor(
-    @Req() req,
-    @Body() toggleFavoriteActorDto: ToggleFavoriteActorDto,
-  ) {
+  @Delete('favorites/actor/:id')
+  removeFavoriteActor(@Req() req, @Param('id') id: number) {
     const userId: number = req.user.id;
 
-    return this.userService.removeActorFromFavorites(
-      userId,
-      toggleFavoriteActorDto.actorId,
-    );
+    return this.userService.removeActorFromFavorites(userId, id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('favorites/director')
-  addFavoriteDirector(
-    @Req() req,
-    @Body() toggleFavoriteDirectorDto: ToggleFavoriteDirectorDto,
-  ) {
+  @Post('favorites/director/:id')
+  addFavoriteDirector(@Req() req, @Param('id') id: number) {
     const userId: number = req.user.id;
 
-    return this.userService.addDirectorToFavorites(
-      userId,
-      toggleFavoriteDirectorDto.directorId,
-    );
+    return this.userService.addDirectorToFavorites(userId, id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('favorites/director')
-  removeFavoriteDirector(
-    @Req() req,
-    @Body() toggleFavoriteDirectorDto: ToggleFavoriteDirectorDto,
-  ) {
+  @Delete('favorites/director/:id')
+  removeFavoriteDirector(@Req() req, @Param('id') id: number) {
     const userId: number = req.user.id;
 
-    return this.userService.removeDirectorFromFavorites(
-      userId,
-      toggleFavoriteDirectorDto.directorId,
-    );
+    return this.userService.removeDirectorFromFavorites(userId, id);
   }
 
   @UseGuards(JwtAuthGuard)

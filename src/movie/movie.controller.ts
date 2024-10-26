@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 
@@ -7,8 +7,20 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get()
-  getAll() {
-    return this.movieService.getAllMovies();
+  getAll(
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('sortBy') sortBy?: string,
+    @Query('sortOrder') sortOrder?: 'ASC' | 'DESC',
+    @Query('search') search?: string,
+  ) {
+    return this.movieService.getAllMovies({
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      search,
+    });
   }
 
   @Get(':id')

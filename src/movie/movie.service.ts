@@ -4,6 +4,15 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Director } from 'src/director/director.model';
 import { Actor } from 'src/actor/actor.model';
+import { Op } from 'sequelize';
+
+interface GetAllMoviesOptions {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  search?: string;
+}
 
 @Injectable()
 export class MovieService {
@@ -15,12 +24,43 @@ export class MovieService {
     return movie;
   }
 
-  async getAllMovies() {
-    const movies = await this.movieRepository.findAll({
-      include: [Director, Actor],
+  async getAllMovies(options: GetAllMoviesOptions) {
+    const {
+      page = 1,
+      limit = 3,
+      sortBy = 'tittle',
+      sortOrder = 'ASC',
+      search,
+    } = options;
+
+    const offset = (page - 1) * limit;
+
+    const where: any = {};
+
+    if (search) {
+      where[Op.or] = [
+        { tittle: { [Op.iLike]: `%${search}%` } },
+        { genre: { [Op.iLike]: `%${search}%` } },
+      ];
+    }
+
+    const movies = await this.movieRepository.findAndCountAll({
+      where,
+      // include: [Director, Actor],
+      limit,
+      offset,
+      order: [[sortBy, sortOrder]],
     });
 
-    return movies;
+    return {
+      data: movies.rows,
+      pagination: {
+        total: movies.count,
+        current_page: Number(page),
+        limit: Number(limit),
+        total_pages: Math.ceil(movies.count / limit),
+      },
+    };
   }
 
   async getMovieById(id: number) {

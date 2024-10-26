@@ -21,7 +21,10 @@ export class AuthService {
   async login(userDto: LoginUserDto) {
     const user = await this.validateUser(userDto);
 
-    return this.generationToken(user);
+    return {
+      user: user,
+      token: this.generationToken(user),
+    };
   }
 
   private async validateUser(userDto: LoginUserDto) {
@@ -54,7 +57,10 @@ export class AuthService {
       ...userDto,
       password: hashPassword,
     });
-    return this.generationToken(user);
+    return {
+      user: user,
+      token: this.generationToken(user),
+    };
   }
 
   async check(id: number) {
@@ -63,11 +69,9 @@ export class AuthService {
     return user;
   }
 
-  private async generationToken(user: User) {
+  private generationToken(user: User) {
     const payload = { email: user.email, id: user.id };
 
-    return {
-      token: this.jwtService.sign(payload),
-    };
+    return this.jwtService.sign(payload);
   }
 }
