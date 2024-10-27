@@ -47,6 +47,7 @@ export class MovieService {
     const movies = await this.movieRepository.findAndCountAll({
       where,
       include: [Director, Actor],
+      distinct: true,
       limit,
       offset,
       order: [[sortBy, sortOrder]],

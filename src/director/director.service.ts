@@ -49,6 +49,7 @@ export class DirectorService {
     const directors = await this.directorRepository.findAndCountAll({
       where,
       include: [Movie],
+      distinct: true,
       limit,
       offset,
       order: [[sortBy, sortOrder]],
