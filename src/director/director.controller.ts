@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { DirectorService } from './director.service';
 import { CreateDirectorDto } from './dto/create-director.dto';
 
@@ -7,8 +7,20 @@ export class DirectorController {
   constructor(private readonly directorService: DirectorService) {}
 
   @Get()
-  getAll() {
-    return this.directorService.getAll();
+  getAll(
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('sortBy') sortBy?: string,
+    @Query('sortOrder') sortOrder?: 'ASC' | 'DESC',
+    @Query('search') search?: string,
+  ) {
+    return this.directorService.getAll({
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      search,
+    });
   }
 
   @Get(':id')

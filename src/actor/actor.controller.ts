@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ActorService } from './actor.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 
@@ -7,8 +7,20 @@ export class ActorController {
   constructor(private readonly actorService: ActorService) {}
 
   @Get()
-  getAll() {
-    return this.actorService.getAll();
+  getAll(
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('sortBy') sortBy?: string,
+    @Query('sortOrder') sortOrder?: 'ASC' | 'DESC',
+    @Query('search') search?: string,
+  ) {
+    return this.actorService.getAll({
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      search,
+    });
   }
 
   @Get(':id')
