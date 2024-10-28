@@ -19,6 +19,7 @@ import * as bcrypt from 'bcryptjs';
 import { Movie } from 'src/movie/movie.model';
 import { Actor } from 'src/actor/actor.model';
 import { Director } from 'src/director/director.model';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,7 @@ export class UserService {
     private movieService: MovieService,
     private actorService: ActorService,
     private directorService: DirectorService,
+    private jwtService: JwtService,
   ) {}
 
   async createUser(dto: CreateUserDto) {
@@ -68,7 +70,7 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: number, dto: UpdateUserDto): Promise<User> {
+  async updateUser(id: number, dto: UpdateUserDto) {
     const updatedUser = { ...dto };
     const user = await this.getUserById(id);
 
@@ -112,7 +114,12 @@ export class UserService {
     }
 
     await user.update(updatedUser);
-    return user;
+
+    const payload = { email: user.email, id: user.id };
+
+    const newToken = this.jwtService.sign(payload);
+
+    return { user: user, token: newToken };
   }
 
   async addMovieToFavorites(userId: number, movieId: number) {

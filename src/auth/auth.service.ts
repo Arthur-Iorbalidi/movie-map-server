@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -29,6 +30,10 @@ export class AuthService {
 
   private async validateUser(userDto: LoginUserDto) {
     const user = await this.userService.getUserByEmail(userDto.email);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     const passwordEquals = await bcrypt.compare(
       userDto.password,
