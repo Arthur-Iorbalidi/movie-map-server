@@ -21,7 +21,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('/check')
   checkToken(@Req() req) {
-    const userId = req.user.id;
-    return this.authService.check(userId);
+    const userEmail = req.user.email;
+    return this.authService.check(userEmail);
   }
 }

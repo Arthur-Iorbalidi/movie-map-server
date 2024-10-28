@@ -63,8 +63,8 @@ export class AuthService {
     };
   }
 
-  async check(id: number) {
-    const user = await this.userService.getUserById(id);
+  async check(email: string) {
+    const user = await this.userService.getUserByEmail(email);
 
     return user;
   }
