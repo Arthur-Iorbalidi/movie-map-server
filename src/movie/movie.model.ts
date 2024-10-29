@@ -17,7 +17,7 @@ interface MovieCreationAttrs {
   description?: string;
   creationDate: string;
   genre: string;
-  logoUrl?: string;
+  image?: string;
   budget: string;
 }
 
@@ -44,7 +44,7 @@ export class Movie extends Model<Movie, MovieCreationAttrs> {
   genre: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  logoUrl: string;
+  image: string;
 
   @Column({ type: DataType.INTEGER, allowNull: false })
   budget: string;

@@ -16,7 +16,7 @@ interface ActorCreationAttrs {
   height?: number;
   birthday: string;
   dateOfDeath?: string;
-  imgUrl?: string;
+  image?: string;
   placeOfBirth: string;
 }
 
@@ -49,7 +49,7 @@ export class Actor extends Model<Actor, ActorCreationAttrs> {
   dateOfDeath: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  imgUrl: string;
+  image: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   placeOfBirth: string;

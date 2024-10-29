@@ -15,7 +15,7 @@ interface DirectorCreationAttrs {
   surname: string;
   birthday: string;
   dateOfDeath?: string;
-  imgUrl?: string;
+  image?: string;
   placeOfBirth: string;
   genre: string;
 }
@@ -46,7 +46,7 @@ export class Director extends Model<Director, DirectorCreationAttrs> {
   dateOfDeath: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  imgUrl: string;
+  image: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   placeOfBirth: string;

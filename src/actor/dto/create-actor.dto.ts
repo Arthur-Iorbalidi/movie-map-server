@@ -5,6 +5,6 @@ export class CreateActorDto {
   readonly height: number;
   readonly birthday: string;
   readonly dateOfDeath?: string;
-  readonly imgUrl: string;
+  readonly image?: string;
   readonly placeOfBirth: string;
 }
