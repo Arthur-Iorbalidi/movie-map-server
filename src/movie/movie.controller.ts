@@ -1,6 +1,16 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('movies')
 export class MovieController {
@@ -29,7 +39,8 @@ export class MovieController {
   }
 
   @Post()
-  createMovie(@Body() movieDto: CreateMovieDto) {
-    return this.movieService.createMovie(movieDto);
+  @UseInterceptors(FileInterceptor('image'))
+  createMovie(@Body() movieDto: CreateMovieDto, @UploadedFile() image?) {
+    return this.movieService.createMovie(movieDto, image);
   }
 }

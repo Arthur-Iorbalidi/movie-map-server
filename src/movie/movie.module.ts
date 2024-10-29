@@ -9,6 +9,7 @@ import { ActorUser } from 'src/actor_user/actor_user';
 import { MovieActor } from 'src/movie_actor/movie_actor.model';
 import { Director } from 'src/director/director.model';
 import { MovieDirector } from 'src/movie_director/movie_director.model';
+import { FilesModule } from 'src/files/files.module';
 
 @Module({
   controllers: [MovieController],
@@ -23,6 +24,7 @@ import { MovieDirector } from 'src/movie_director/movie_director.model';
       MovieActor,
       MovieDirector,
     ]),
+    FilesModule,
   ],
   exports: [MovieService],
 })

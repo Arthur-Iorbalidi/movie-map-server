@@ -7,6 +7,7 @@ import { DirectorUser } from 'src/director_user/director_user';
 import { User } from 'src/user/user.model';
 import { Movie } from 'src/movie/movie.model';
 import { MovieDirector } from 'src/movie_director/movie_director.model';
+import { FilesModule } from 'src/files/files.module';
 
 @Module({
   controllers: [DirectorController],
@@ -19,6 +20,7 @@ import { MovieDirector } from 'src/movie_director/movie_director.model';
       DirectorUser,
       MovieDirector,
     ]),
+    FilesModule,
   ],
   exports: [DirectorService],
 })

@@ -6,11 +6,15 @@ import { Movie } from 'src/movie/movie.model';
 import { Actor } from './actor.model';
 import { MovieActor } from 'src/movie_actor/movie_actor.model';
 import { ActorUser } from 'src/actor_user/actor_user';
+import { FilesModule } from 'src/files/files.module';
 
 @Module({
   controllers: [ActorController],
   providers: [ActorService],
-  imports: [SequelizeModule.forFeature([Actor, Movie, MovieActor, ActorUser])],
+  imports: [
+    SequelizeModule.forFeature([Actor, Movie, MovieActor, ActorUser]),
+    FilesModule,
+  ],
   exports: [ActorService],
 })
 export class ActorModule {}

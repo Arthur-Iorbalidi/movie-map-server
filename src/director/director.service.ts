@@ -4,6 +4,7 @@ import { CreateDirectorDto } from './dto/create-director.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Movie } from 'src/movie/movie.model';
 import { Op } from 'sequelize';
+import { FilesService } from 'src/files/files.service';
 
 interface GetAllDirectorsOptions {
   page?: number;
@@ -17,10 +18,20 @@ interface GetAllDirectorsOptions {
 export class DirectorService {
   constructor(
     @InjectModel(Director) private directorRepository: typeof Director,
+    private fileService: FilesService,
   ) {}
 
-  async createDirector(dto: CreateDirectorDto) {
-    const director = await this.directorRepository.create(dto);
+  async createDirector(dto: CreateDirectorDto, image?: any) {
+    let fileName: string | null = null;
+
+    if (image) {
+      fileName = await this.fileService.createImage(image);
+    }
+
+    const director = await this.directorRepository.create({
+      ...dto,
+      image: fileName,
+    });
 
     return director;
   }

@@ -4,6 +4,5 @@ export class CreateDirectorDto {
   readonly description?: string;
   readonly birthday: string;
   readonly dateOfDeath?: string;
-  readonly image?: string;
   readonly placeOfBirth: string;
 }

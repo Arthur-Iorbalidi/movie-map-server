@@ -1,6 +1,16 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ActorService } from './actor.service';
 import { CreateActorDto } from './dto/create-actor.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('actors')
 export class ActorController {
@@ -29,7 +39,8 @@ export class ActorController {
   }
 
   @Post()
-  createActor(@Body() directorDto: CreateActorDto) {
-    return this.actorService.createActor(directorDto);
+  @UseInterceptors(FileInterceptor('image'))
+  createActor(@Body() directorDto: CreateActorDto, @UploadedFile() image?) {
+    return this.actorService.createActor(directorDto, image);
   }
 }

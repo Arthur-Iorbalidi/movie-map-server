@@ -4,6 +4,7 @@ import { CreateActorDto } from './dto/create-actor.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Movie } from 'src/movie/movie.model';
 import { Op } from 'sequelize';
+import { FilesService } from 'src/files/files.service';
 
 interface GetAllActorsOptions {
   page?: number;
@@ -15,10 +16,22 @@ interface GetAllActorsOptions {
 
 @Injectable()
 export class ActorService {
-  constructor(@InjectModel(Actor) private actorRepository: typeof Actor) {}
+  constructor(
+    @InjectModel(Actor) private actorRepository: typeof Actor,
+    private fileService: FilesService,
+  ) {}
 
-  async createActor(dto: CreateActorDto) {
-    const actor = await this.actorRepository.create(dto);
+  async createActor(dto: CreateActorDto, image?: any) {
+    let fileName: string | null = null;
+
+    if (image) {
+      fileName = await this.fileService.createImage(image);
+    }
+
+    const actor = await this.actorRepository.create({
+      ...dto,
+      image: fileName,
+    });
 
     return actor;
   }

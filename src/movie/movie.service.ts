@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Director } from 'src/director/director.model';
 import { Actor } from 'src/actor/actor.model';
 import { Op } from 'sequelize';
+import { FilesService } from 'src/files/files.service';
 
 interface GetAllMoviesOptions {
   page?: number;
@@ -16,10 +17,22 @@ interface GetAllMoviesOptions {
 
 @Injectable()
 export class MovieService {
-  constructor(@InjectModel(Movie) private movieRepository: typeof Movie) {}
+  constructor(
+    @InjectModel(Movie) private movieRepository: typeof Movie,
+    private fileService: FilesService,
+  ) {}
 
-  async createMovie(dto: CreateMovieDto) {
-    const movie = await this.movieRepository.create(dto);
+  async createMovie(dto: CreateMovieDto, image?: any) {
+    let fileName: string | null = null;
+
+    if (image) {
+      fileName = await this.fileService.createImage(image);
+    }
+
+    const movie = await this.movieRepository.create({
+      ...dto,
+      image: fileName,
+    });
 
     return movie;
   }

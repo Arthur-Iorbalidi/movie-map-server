@@ -1,6 +1,16 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { DirectorService } from './director.service';
 import { CreateDirectorDto } from './dto/create-director.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('directors')
 export class DirectorController {
@@ -29,7 +39,11 @@ export class DirectorController {
   }
 
   @Post()
-  createDirector(@Body() directorDto: CreateDirectorDto) {
-    return this.directorService.createDirector(directorDto);
+  @UseInterceptors(FileInterceptor('image'))
+  createDirector(
+    @Body() directorDto: CreateDirectorDto,
+    @UploadedFile() image?,
+  ) {
+    return this.directorService.createDirector(directorDto, image);
   }
 }
