@@ -12,6 +12,7 @@ interface GetAllActorsOptions {
   sortBy?: string;
   sortOrder?: 'ASC' | 'DESC';
   search?: string;
+  filters?: string;
 }
 
 @Injectable()
@@ -43,6 +44,7 @@ export class ActorService {
       sortBy = 'name',
       sortOrder = 'ASC',
       search,
+      filters,
     } = options;
 
     const offset = (page - 1) * limit;
@@ -55,6 +57,29 @@ export class ActorService {
         { surname: { [Op.iLike]: `%${search}%` } },
         { placeOfBirth: { [Op.iLike]: `%${search}%` } },
       ];
+    }
+
+    if (filters) {
+      const parsedFilters = JSON.parse(filters);
+
+      if (
+        parsedFilters.heightMin !== undefined ||
+        parsedFilters.heightMax !== undefined
+      ) {
+        where.height = {};
+        if (parsedFilters.heightMin !== undefined)
+          where.height[Op.gte] = parsedFilters.heightMin;
+        if (parsedFilters.heightMax !== undefined)
+          where.height[Op.lte] = parsedFilters.heightMax;
+      }
+
+      if (parsedFilters.birthdayMin || parsedFilters.birthdayMax) {
+        where.birthday = {};
+        if (parsedFilters.birthdayMin)
+          where.birthday[Op.gte] = parsedFilters.birthdayMin;
+        if (parsedFilters.birthdayMax)
+          where.birthday[Op.lte] = parsedFilters.birthdayMax;
+      }
     }
 
     const actors = await this.actorRepository.findAndCountAll({

@@ -23,6 +23,7 @@ export class ActorController {
     @Query('sortBy') sortBy?: string,
     @Query('sortOrder') sortOrder?: 'ASC' | 'DESC',
     @Query('search') search?: string,
+    @Query('filters') filters?: string,
   ) {
     return this.actorService.getAll({
       page,
@@ -30,6 +31,7 @@ export class ActorController {
       sortBy,
       sortOrder,
       search,
+      filters,
     });
   }
 
