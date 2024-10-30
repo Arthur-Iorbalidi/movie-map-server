@@ -16,51 +16,63 @@ export class ReportsService {
     }
 
     const pdfDoc = await PDFDocument.create();
+    const pageMargin = 50;
+    const lineHeight = 20;
+    const titleFontSize = 20;
+    const contentFontSize = 14;
+    const contentIndent = 50;
 
-    const page = pdfDoc.addPage();
+    let page = pdfDoc.addPage();
     const { height } = page.getSize();
+    let yPosition = height - pageMargin;
 
     page.drawText('Favorite Movies Report', {
-      x: 50,
-      y: height - 50,
-      size: 20,
+      x: contentIndent,
+      y: yPosition,
+      size: titleFontSize,
       color: rgb(0, 0, 0),
     });
 
-    let yPosition = height - 80;
+    yPosition -= 2 * lineHeight;
 
     movies.forEach((movie) => {
+      if (yPosition < pageMargin + lineHeight * 4) {
+        page = pdfDoc.addPage();
+        yPosition = height - pageMargin;
+        yPosition -= 2 * lineHeight;
+      }
+
       page.drawText(`Title: ${movie.title}`, {
-        x: 50,
+        x: contentIndent,
         y: yPosition,
-        size: 14,
+        size: contentFontSize,
         color: rgb(0, 0, 0),
       });
-      yPosition -= 20;
+      yPosition -= lineHeight;
 
       page.drawText(`Genre: ${movie.genre}`, {
-        x: 50,
+        x: contentIndent,
         y: yPosition,
-        size: 12,
+        size: contentFontSize - 2,
         color: rgb(0, 0, 0),
       });
-      yPosition -= 20;
+      yPosition -= lineHeight;
 
       page.drawText(`Release Date: ${movie.creationDate}`, {
-        x: 50,
+        x: contentIndent,
         y: yPosition,
-        size: 12,
+        size: contentFontSize - 2,
         color: rgb(0, 0, 0),
       });
-      yPosition -= 20;
+      yPosition -= lineHeight;
 
       page.drawText(`Budget: ${movie.budget}`, {
-        x: 50,
+        x: contentIndent,
         y: yPosition,
-        size: 12,
+        size: contentFontSize - 2,
         color: rgb(0, 0, 0),
       });
-      yPosition -= 40;
+      yPosition -= lineHeight * 2;
     });
 
     const pdfBytes = await pdfDoc.save();
