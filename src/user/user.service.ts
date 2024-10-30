@@ -38,7 +38,7 @@ export class UserService {
   async createUser(dto: CreateUserDto) {
     const user = await this.userRepository.create(dto);
 
-    return user;
+    return await this.getUserByEmail(user.email);
   }
 
   async getAllUsers() {
