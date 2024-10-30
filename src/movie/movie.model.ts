@@ -13,7 +13,7 @@ import { MovieUser } from 'src/movie_user/movie_user.model';
 import { User } from 'src/user/user.model';
 
 interface MovieCreationAttrs {
-  tittle: string;
+  title: string;
   description?: string;
   creationDate: string;
   genre: string;
@@ -32,7 +32,7 @@ export class Movie extends Model<Movie, MovieCreationAttrs> {
   id: number;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  tittle: string;
+  title: string;
 
   @Column({ type: DataType.TEXT, allowNull: true })
   description: string;

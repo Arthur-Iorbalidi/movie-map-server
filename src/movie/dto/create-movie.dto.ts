@@ -1,5 +1,5 @@
 export class CreateMovieDto {
-  readonly tittle: string;
+  readonly title: string;
   readonly description?: string;
   readonly creationDate: string;
   readonly genre: string;

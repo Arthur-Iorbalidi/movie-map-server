@@ -41,7 +41,7 @@ export class MovieService {
     const {
       page = 1,
       limit = 3,
-      sortBy = 'tittle',
+      sortBy = 'title',
       sortOrder = 'ASC',
       search,
     } = options;
@@ -52,7 +52,7 @@ export class MovieService {
 
     if (search) {
       where[Op.or] = [
-        { tittle: { [Op.iLike]: `%${search}%` } },
+        { title: { [Op.iLike]: `%${search}%` } },
         { genre: { [Op.iLike]: `%${search}%` } },
       ];
     }

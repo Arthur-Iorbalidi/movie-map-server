@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
 import { MovieDirector } from './movie_director/movie_director.model';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { FilesModule } from './files/files.module';
+import { ReportsModule } from './reports/reports.module';
 import * as path from 'path';
 
 @Module({
@@ -55,6 +56,7 @@ import * as path from 'path';
     DirectorModule,
     AuthModule,
     FilesModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}
