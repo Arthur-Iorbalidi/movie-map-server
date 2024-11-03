@@ -5,7 +5,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { ActorUser } from 'src/actor_user/actor_user';
+import { ActorUser } from 'src/actor_user/actor_user.model';
 import { Movie } from 'src/movie/movie.model';
 import { MovieActor } from 'src/movie_actor/movie_actor.model';
 import { User } from 'src/user/user.model';
