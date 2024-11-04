@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Director } from './director.model';
 import { CreateDirectorDto } from './dto/create-director.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -82,6 +82,10 @@ export class DirectorService {
       where: { id },
       include: [Movie],
     });
+
+    if (!director) {
+      throw new NotFoundException(`Director not found`);
+    }
 
     return director;
   }

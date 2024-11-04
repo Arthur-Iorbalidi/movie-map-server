@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Actor } from './actor.model';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -107,6 +107,10 @@ export class ActorService {
       where: { id },
       include: [Movie],
     });
+
+    if (!actor) {
+      throw new NotFoundException(`Actor not found`);
+    }
 
     return actor;
   }
