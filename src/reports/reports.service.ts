@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Paragraph, Packer, Document, AlignmentType, TextRun } from 'docx';
+import { Paragraph, Packer, Document, AlignmentType, TextRun, Table, TableCell, TableRow, WidthType } from 'docx';
 import { UserService } from 'src/user/user.service';
 import { Response } from 'express';
 import { PDFDocument, rgb } from 'pdf-lib';
@@ -89,6 +89,78 @@ export class ReportsService {
       throw new BadRequestException('No favorite movies found');
     }
 
+    const table = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Title', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Genre', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Release Date', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Budget', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+          ],
+        }),
+        ...movies.map((movie) =>
+          new TableRow({
+            children: [
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: movie.title, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: movie.genre, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: movie.creationDate, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: `${movie.budget.toString()}$`, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+            ],
+          }),
+        ),
+      ],
+    });
+
     const doc = new Document({
       sections: [
         {
@@ -99,57 +171,15 @@ export class ReportsService {
                 new TextRun({
                   text: 'Favorite Movies Report',
                   bold: true,
-                  size: 28,
+                  size: 40,
                   color: '000000',
+                  font: 'Helvetica',
                 }),
               ],
               alignment: AlignmentType.CENTER,
               spacing: { after: 400 },
             }),
-            ...movies.flatMap((movie) => [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Title: ${movie.title}`,
-                    bold: true,
-                    size: 24,
-                    color: '2E75B6',
-                  }),
-                ],
-                spacing: { after: 200 },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Genre: ${movie.genre}`,
-                    bold: true,
-                    size: 20,
-                    color: '1F4E78',
-                  }),
-                ],
-                spacing: { after: 100 },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Release Date: ${movie.creationDate}`,
-                    size: 20,
-                    color: '5B9BD5',
-                  }),
-                ],
-                spacing: { after: 100 },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Budget: ${movie.budget}`,
-                    size: 20,
-                    color: '5B9BD5',
-                  }),
-                ],
-                spacing: { after: 300 },
-              }),
-            ]),
+            table,
           ],
         },
       ],
@@ -242,51 +272,83 @@ export class ReportsService {
       throw new BadRequestException('No favorite actors found');
     }
 
+    const table = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Name', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Birthday', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Place of Birth', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+          ],
+        }),
+        ...actors.map((actor) =>
+          new TableRow({
+            children: [
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: `${actor.name} ${actor.surname}`, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: actor.birthday, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: actor.placeOfBirth, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+            ],
+          })
+        ),
+      ],
+    });
+
     const doc = new Document({
       sections: [
         {
+          properties: {},
           children: [
             new Paragraph({
               children: [
                 new TextRun({
                   text: 'Favorite Actors Report',
                   bold: true,
-                  size: 28,
+                  size: 40,
+                  color: '000000',
+                  font: 'Helvetica',
                 }),
               ],
               alignment: AlignmentType.CENTER,
               spacing: { after: 400 },
             }),
-            ...actors.flatMap((actor) => [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Name: ${actor.name} ${actor.surname}`,
-                    bold: true,
-                    size: 24,
-                  }),
-                ],
-                spacing: { after: 200 },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Birthday: ${actor.birthday}`,
-                    size: 20,
-                  }),
-                ],
-                spacing: { after: 100 },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Place of Birth: ${actor.placeOfBirth}`,
-                    size: 20,
-                  }),
-                ],
-                spacing: { after: 300 },
-              }),
-            ]),
+            table,
           ],
         },
       ],
@@ -381,51 +443,83 @@ export class ReportsService {
       throw new BadRequestException('No favorite directors found');
     }
 
+    const table = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Name', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Birthday', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+            new TableCell({
+              children: [new Paragraph({
+                children: [new TextRun({ text: 'Place of Birth', bold: true, size: 34 })],
+                alignment: AlignmentType.CENTER,
+              })],
+              margins: { top: 200, bottom: 200 },
+            }),
+          ],
+        }),
+        ...directors.map((director) =>
+          new TableRow({
+            children: [
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: `${director.name} ${director.surname}`, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: director.birthday, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+              new TableCell({
+                children: [new Paragraph({
+                  children: [new TextRun({ text: director.placeOfBirth, size: 28 })],
+                  alignment: AlignmentType.CENTER,
+                })],
+                margins: { top: 200, bottom: 200 },
+              }),
+            ],
+          })
+        ),
+      ],
+    });
+
     const doc = new Document({
       sections: [
         {
+          properties: {},
           children: [
             new Paragraph({
               children: [
                 new TextRun({
                   text: 'Favorite Directors Report',
                   bold: true,
-                  size: 28,
+                  size: 40,
+                  color: '000000',
+                  font: 'Helvetica',
                 }),
               ],
               alignment: AlignmentType.CENTER,
               spacing: { after: 400 },
             }),
-            ...directors.flatMap((director) => [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Name: ${director.name} ${director.surname}`,
-                    bold: true,
-                    size: 24,
-                  }),
-                ],
-                spacing: { after: 200 },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Birthday: ${director.birthday}`,
-                    size: 20,
-                  }),
-                ],
-                spacing: { after: 100 },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Place of Birth: ${director.placeOfBirth}`,
-                    size: 20,
-                  }),
-                ],
-                spacing: { after: 300 },
-              }),
-            ]),
+            table,
           ],
         },
       ],
